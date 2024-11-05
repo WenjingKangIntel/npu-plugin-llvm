@@ -758,7 +758,6 @@ if (MSVC)
     # by fixing the command line.
     string(REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
     string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-
     if (LLVM_ENABLE_PEDANTIC)
       # No MSVC equivalent available
     endif (LLVM_ENABLE_PEDANTIC)
@@ -767,6 +766,14 @@ if (MSVC)
   foreach(flag ${msvc_warning_flags})
     append("${flag}" CMAKE_C_FLAGS CMAKE_CXX_FLAGS)
   endforeach(flag)
+  if (BUILD_COMPILER_FOR_DRIVER)
+      string(REPLACE "/wd4146" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+      string(REPLACE "/wd4146" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+      string(REPLACE "/wd4244" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+      string(REPLACE "/wd4244" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+      string(REPLACE "/wd4267" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+      string(REPLACE "/wd4267" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+  endif()
 endif (MSVC)
 
 if (LLVM_ENABLE_WARNINGS AND (LLVM_COMPILER_IS_GCC_COMPATIBLE OR CLANG_CL))
